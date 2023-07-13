@@ -1,13 +1,14 @@
+require("dotenv").config("../.env");
 const express = require("express");
+const { errorHandler, notFoundHandler } = require("./error");
 
 const app = express();
 
-app.get("/health", (_req, res) => {
-  res.status(200).json({
-    status: true,
-    request: "Success",
-    message: "Request Done",
-  });
-});
+app.use(require("./middleware"));
+app.use(require("./routes"));
 
-module.exports=app;
+app.use(notFoundHandler);
+
+app.use(errorHandler);
+
+module.exports = app;
